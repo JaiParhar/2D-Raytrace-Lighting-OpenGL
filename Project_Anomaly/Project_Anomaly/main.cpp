@@ -32,22 +32,20 @@ int main(int argc, char* args[])
 	int mX = 0;
 	int mY = 0;
 
-	// CREATE A DEVTEST MAP FOR LIGHTING TESTS
-
-	LightMap m;
+	// TEST VISION TRIS
+	LightMap m; // A DEVTEST MAP FOR LIGHTING TESTS
 	m.walls.push_back(seg2(100, 100, 200, 100));
 	m.walls.push_back(seg2(200, 100, 200, 200));
 	m.walls.push_back(seg2(200, 200, 100, 200));
 
-	// CREATE A DEVTEST MAP FOR LIGHTING TESTS
+	m.walls.push_back(seg2(400, 200, 400, 275));
+	m.walls.push_back(seg2(400, 300, 400, 375));
+	m.walls.push_back(seg2(400, 400, 400, 475));
+	m.walls.push_back(seg2(400, 500, 400, 575));
 
-	// TEST RAYCAST
-	seg2 testWall = seg2(100, 100, 100, 500);
-	vec2 rayPos = vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	vec2 rayDir = vec2(-10, -10);
-	vec2 collPos;
-	SDL_FRect collPosDrawRect = {0, 0, 5, 5};
-	// TEST RAYCAST
+	vec2 playerPos = vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	// TEST VISION TRIS
+
 
 	while (!quit)
 	{
@@ -64,28 +62,25 @@ int main(int argc, char* args[])
 			}
 		}
 
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-		SDL_RenderClear(renderer);
-		
 		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 0xFF);
+		SDL_RenderClear(renderer);
 
-		// TEST RAYCAST CODE
-		SDL_RenderDrawLine(renderer,
-			testWall.start.x, testWall.start.y,
-			testWall.end.x, testWall.end.y);
+		// TEST VISION TRIS
 
-		rayDir.x = mX - rayPos.x; rayDir.y = mY - rayPos.y;
-		if (raycastIntersection(rayPos, rayDir, testWall, &collPos))
+		playerPos.x = mX;
+		playerPos.y = mY;
+
+		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+		renderLightMapOutline(renderer, m);
+		
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		std::vector<Triangle> visionTris = getVisionTris(m, playerPos, vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2), 2 * SCREEN_WIDTH, 2 * SCREEN_HEIGHT);
+		for (int i = 0; i < visionTris.size(); i++)
 		{
-			collPosDrawRect.x = collPos.x - 2;
-			collPosDrawRect.y = collPos.y - 2;
-			SDL_RenderDrawLineF(renderer, rayPos.x, rayPos.y, collPos.x, collPos.y);
-			SDL_RenderFillRectF(renderer, &collPosDrawRect);
+			renderFilledTri(renderer, visionTris[i]);
 		}
-		// TEST RAYCAST CODE
 
-		//renderLightMapOutline(renderer, m);
-		//filledTrigon(renderer, 100, 100, 200, 100, mX, mY);
+		//TEST VISION TRIS
 
 
 

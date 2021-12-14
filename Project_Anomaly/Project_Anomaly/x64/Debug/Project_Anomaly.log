@@ -1,22 +1,2 @@
 ﻿  main.cpp
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\common.h(23,64): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\common.h(23,50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\common.h(24,64): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\common.h(24,50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\common.h(46,14): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\gfx_utils.h(27,11): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\gfx_utils.h(27,5): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\gfx_utils.h(26,11): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\gfx_utils.h(26,5): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\gfx_utils.h(25,11): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\gfx_utils.h(25,5): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\gfx_utils.h(70,8): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\gfx_map.h(13,38): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\gfx_map.h(13,19): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\gfx_map.h(12,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\gfx_map.h(12,21): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(75,32): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(75,16): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(74,36): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(74,18): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Project_Anomaly.vcxproj -> C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\x64\Debug\Project_Anomaly.exe
