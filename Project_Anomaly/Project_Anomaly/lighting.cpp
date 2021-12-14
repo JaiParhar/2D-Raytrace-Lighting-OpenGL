@@ -75,7 +75,6 @@ std::vector<Triangle> getVisionTris(LightMap m, vec2 pos, vec2 boundPos, int bou
 	return visionTris;
 }
 
-// Gets the rays (What a shitty name for a function jesus christ)
 std::vector<vec2> getSortedUniqueRaysToEndpoints(std::vector<seg2> segs, vec2 pos)
 {
 	// Gets unique angles into the array
@@ -119,4 +118,41 @@ std::vector<vec2> getSortedUniqueRaysToEndpoints(std::vector<seg2> segs, vec2 po
 	}
 
 	return rays;
+}
+
+SDL_Texture* generateLightFadeTexture(SDL_Renderer* renderer, int pixelW, int pixelH, double lightMag, double lightFade)
+{
+	// SDL_PIXELFORMAT_RGBA8888 means 1 byte red, 1 byte green, 1 byte blue, 1 byte alpha
+	SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, pixelW, pixelH);
+
+	Uint32* pixels;
+	int pitch; // width in bytes
+
+	SDL_LockTexture(texture, NULL, (void**) &pixels, &pitch);
+
+	int bytesPerPixel = pitch / pixelW;
+
+	for (int y = 0; y < pixelH; y++)
+	{
+		for (int x = 0; x < pixelW; x++)
+		{
+			// Goes from -1 to 1
+			double dx = ((double)x - ((double)pixelW / 2.0)) / ((double)pixelW / 2.0);
+			double dy = ((double)y - ((double)pixelH / 2.0)) / ((double)pixelH / 2.0);
+
+			double r = sqrt(dx * dx + dy * dy);
+			
+			unsigned int mag = (unsigned int) (lightMag * 255.0 * (pow(lightFade, -r)));
+			if (mag > 255)
+			{
+				mag = 255;
+			}
+			unsigned char chmag = (unsigned char) mag;
+			pixels[(pixelW * y) + (x)] = getUint32RGBA8888(chmag, chmag, chmag, 255);
+		}
+	}
+
+	SDL_UnlockTexture(texture);
+
+	return texture;
 }

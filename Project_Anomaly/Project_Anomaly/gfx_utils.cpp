@@ -124,3 +124,13 @@ std::vector<int> interpolateInts(int y0, int x0, int y1, int x1)
 
 	return interpolatedInts;
 }
+
+Uint32 getUint32RGBA8888(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+{
+	Uint32 col = 0;
+	col += r; col = col << 8;
+	col += g; col = col << 8;
+	col += b; col = col << 8;
+	col += a;
+	return col;
+}

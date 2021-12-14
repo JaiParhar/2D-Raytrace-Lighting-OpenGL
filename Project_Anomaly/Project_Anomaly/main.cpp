@@ -46,6 +46,11 @@ int main(int argc, char* args[])
 	vec2 playerPos = vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	// TEST VISION TRIS
 
+	// TEST LIGHT FADE
+
+	SDL_Texture* lightFade = generateLightFadeTexture(renderer, 200, 200, 0.5, 10);
+
+	// TEST LIGHT FADE
 
 	while (!quit)
 	{
@@ -82,7 +87,13 @@ int main(int argc, char* args[])
 
 		//TEST VISION TRIS
 
+		// LIGHT FADE TESTS
 
+		SDL_Rect r; r.x = mX - 100; r.y = mY - 100; r.w = 200; r.h = 200;
+		SDL_RenderCopy(renderer, lightFade, NULL, &r);
+
+
+		// LIGHT FADE TESTS
 
 		
 		SDL_RenderPresent(renderer);
@@ -130,5 +141,6 @@ int init()
 void close()
 {
 	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 }

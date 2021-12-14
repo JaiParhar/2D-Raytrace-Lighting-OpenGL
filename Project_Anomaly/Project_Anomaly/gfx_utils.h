@@ -23,4 +23,7 @@ int renderOutlineTri(SDL_Renderer* renderer, int x0, int y0, int x1, int y1, int
 // Gives back an array of x values dependent on the y values - CANNOT INTERPOLATE IF y0 == y1 AS THAT IS IMPOSSIBLE
 std::vector<int> interpolateInts(int y0, int x0, int y1, int x1);
 
+// Converts rgba to uint32 pixel data
+Uint32 getUint32RGBA8888(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha);
+
 #endif
