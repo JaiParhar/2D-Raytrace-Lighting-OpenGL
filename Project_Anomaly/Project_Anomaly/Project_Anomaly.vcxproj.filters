@@ -27,7 +27,7 @@
     <ClCompile Include="gfx_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gfx_map.cpp">
+    <ClCompile Include="gfx_render.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,13 +35,13 @@
     <ClInclude Include="common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gfx_utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="lighting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gfx_map.h">
+    <ClInclude Include="gfx_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gfx_render.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

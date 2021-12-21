@@ -1,25 +1,23 @@
 #include <stdio.h>
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include "GL/glew.h"
+#include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
 
+#include "gfx_render.h"
 #include "gfx_utils.h"
-#include "gfx_map.h"
 
 #include "lighting.h"
 
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+#define WINDOW_NAME "Project_Anomaly"
+
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 786
 
 int init();
 void close();
 
-SDL_Window* window = NULL;
-SDL_Renderer* renderer = NULL;
-
-SDL_Event e;
-
-bool quit = false;
+GLFWwindow* window;
 
 int main(int argc, char* args[])
 {
@@ -29,75 +27,21 @@ int main(int argc, char* args[])
 		return initErr;
 	}
 
-	int mX = 0;
-	int mY = 0;
+	GLuint quadVAO = genBlankQuadVAO();
+	GLuint basicShader = loadShaders("shaders/basic.vert", "shaders/basic.frag");
 
-	// TEST VISION TRIS
-	LightMap m; // A DEVTEST MAP FOR LIGHTING TESTS
-	m.walls.push_back(seg2(100, 100, 200, 100));
-	m.walls.push_back(seg2(200, 100, 200, 200));
-	m.walls.push_back(seg2(200, 200, 100, 200));
-
-	m.walls.push_back(seg2(400, 200, 400, 275));
-	m.walls.push_back(seg2(400, 300, 400, 375));
-	m.walls.push_back(seg2(400, 400, 400, 475));
-	m.walls.push_back(seg2(400, 500, 400, 575));
-
-	vec2 playerPos = vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	// TEST VISION TRIS
-
-	// TEST LIGHT FADE
-
-	SDL_Texture* lightFade = generateLightFadeTexture(renderer, 200, 200, 0.5, 10);
-
-	// TEST LIGHT FADE
-
-	while (!quit)
+	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
 	{
-		while (SDL_PollEvent(&e) != 0)
-		{
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
-			}
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			if (e.type == SDL_MOUSEMOTION) 
-			{
-				SDL_GetMouseState(&mX, &mY);
-			}
-		}
+		// Render and update area -- TODO: make this proper
 
-		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 0xFF);
-		SDL_RenderClear(renderer);
-
-		// TEST VISION TRIS
-
-		playerPos.x = mX;
-		playerPos.y = mY;
-
-		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-		renderLightMapOutline(renderer, m);
-		
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-		std::vector<Triangle> visionTris = getVisionTris(m, playerPos, vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2), 2 * SCREEN_WIDTH, 2 * SCREEN_HEIGHT);
-		for (int i = 0; i < visionTris.size(); i++)
-		{
-			renderFilledTri(renderer, visionTris[i]);
-		}
-
-		//TEST VISION TRIS
-
-		// LIGHT FADE TESTS
-
-		SDL_Rect r; r.x = mX - 100; r.y = mY - 100; r.w = 200; r.h = 200;
-		SDL_RenderCopy(renderer, lightFade, NULL, &r);
+		glUseProgram(basicShader);
+		renderBlankVAO(quadVAO, 6);
 
 
-		// LIGHT FADE TESTS
-
-		
-		SDL_RenderPresent(renderer);
-
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 
 	close();
@@ -106,41 +50,39 @@ int main(int argc, char* args[])
 
 int init()
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	glewExperimental = true; // Needed for core profile
+	if (!glfwInit())
 	{
-		printf("SDL could not initialize. SDL_Error: %s\n", SDL_GetError());
+		fprintf(stderr, "Failed to initialize GLFW.\n");
 		return -1;
 	}
 
-	window = SDL_CreateWindow("Project_Anomaly", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-	if (window == NULL)
-	{
-		printf("Window could not be created. SDL_Error: %s\n", SDL_GetError());
+	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // OpenGL 4.6
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Needed only for macOS
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Use modern OpenGL 
+
+	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_NAME, NULL, NULL);
+	if (window == NULL) {
+		fprintf(stderr, "Failed to open GLFW window.\n");
+		glfwTerminate();
 		return -1;
 	}
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	if (renderer == NULL)
-	{
-		printf("Renderer could not be created. SDL Error: %s\n", SDL_GetError());
+	glfwMakeContextCurrent(window); // Initialize GLEW
+	glewExperimental = true; // Needed in core profile
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW.\n");
 		return -1;
 	}
 
-	int imgFlags = IMG_INIT_PNG;
-	if (!(IMG_Init(imgFlags) & imgFlags))
-	{
-		printf("SDL_image could not initialize. SDL_image Error: %s\n", IMG_GetError());
-		return -1;
-	}
-
-
+	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	return 0;
 }
 
 void close()
 {
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
-	SDL_Quit();
+
 }

@@ -3,27 +3,18 @@
 #define GFX_UTILS_H
 
 #include <stdio.h>
-#include <cmath>  
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <vector>
 
-#include <SDL.h>
+#include "GL/glew.h"
 
 #include "common.h"
 
-// Draws a filled triangle
-int renderFilledTri(SDL_Renderer* renderer, Triangle t);
-int renderFilledTri(SDL_Renderer* renderer, vec2 p0, vec2 p1, vec2 p2);
-int renderFilledTri(SDL_Renderer* renderer, int x0, int y0, int x1, int y1, int x2, int y2);
+GLuint genBlankQuadVAO();
 
-// Draws the outline of a triangle
-int renderOutlineTri(SDL_Renderer* renderer, Triangle t);
-int renderOutlineTri(SDL_Renderer* renderer, vec2 p0, vec2 p1, vec2 p2);
-int renderOutlineTri(SDL_Renderer* renderer, int x0, int y0, int x1, int y1, int x2, int y2);
-
-// Gives back an array of x values dependent on the y values - CANNOT INTERPOLATE IF y0 == y1 AS THAT IS IMPOSSIBLE
-std::vector<int> interpolateInts(int y0, int x0, int y1, int x1);
-
-// Converts rgba to uint32 pixel data
-Uint32 getUint32RGBA8888(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha);
+GLuint loadShaders(const char* vertex_file_path, const char* fragment_file_path);
 
 #endif
