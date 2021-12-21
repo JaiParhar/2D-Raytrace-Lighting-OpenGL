@@ -5,7 +5,8 @@
 #include "GL/glew.h"
 
 #include "common.h"
+#include "gfx_utils.h"
 
-void renderBlankVAO(GLuint VAO_ID, GLuint numVertices);
+void renderBlankVAO(GLuint VAO_ID, GLuint num_vertices);
 
 #endif

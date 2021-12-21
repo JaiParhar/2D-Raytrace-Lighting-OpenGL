@@ -11,13 +11,15 @@
 
 #define WINDOW_NAME "Project_Anomaly"
 
-#define WINDOW_WIDTH 1024
-#define WINDOW_HEIGHT 786
+#define WINDOW_WIDTH 2048
+#define WINDOW_HEIGHT 1572
 
 int init();
 void close();
 
 GLFWwindow* window;
+
+LightMap lm;
 
 int main(int argc, char* args[])
 {
@@ -27,8 +29,36 @@ int main(int argc, char* args[])
 		return initErr;
 	}
 
-	GLuint quadVAO = genBlankQuadVAO();
-	GLuint basicShader = loadShaders("shaders/basic.vert", "shaders/basic.frag");
+
+	lm.walls.push_back(seg2(-0.75, 0, -0.75, 0.5));
+	lm.walls.push_back(seg2(0.75, 0.64, 0.75, 0.5));
+
+	lm.walls.push_back(seg2(-0.75, -0.75, -0.75, -0.5));
+	lm.walls.push_back(seg2(-0.75, -0.5, -0.95, -0.5));
+	lm.walls.push_back(seg2(-0.75, -0.75, -0.95, -0.75));
+
+
+	// TODO - LIGHTING
+	// MAKE A SINGLE VAO FOR THE LIGHTING TRIS, THEN JUST UPDATE THE VERTEX DATA FOR IT
+	GLuint lightingVAO = genVAO();
+	glBindVertexArray(lightingVAO);
+	GLuint lightingVBO = genVBO();
+	storeVBOData(lightingVBO, 0, QUAD_VERTEX_DATA, sizeof(QUAD_VERTEX_DATA));
+	
+	GLfloat TEST_DATA[] = {
+	-0.5f, 0.5f, 0.0f,
+	0.5f, 0.5f, 0.0f,
+	-0.5f, -0.5f, 0.0f,
+
+	0.5f, 0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f,
+	-0.5f, -0.5f, 0.0f
+	};
+
+	GLuint basic_shader = loadShaders("shaders/basic.vert", "shaders/basic.frag");
+	
+	double mX, mY;
+	glfwGetCursorPos(window, &mX, &mY);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
 	{
@@ -36,9 +66,19 @@ int main(int argc, char* args[])
 
 		// Render and update area -- TODO: make this proper
 
-		glUseProgram(basicShader);
-		renderBlankVAO(quadVAO, 6);
+		glfwGetCursorPos(window, &mX, &mY);
 
+		std::vector<Triangle> lightingTris = getVisionTris(lm,
+			glm::vec2(float(2 * (mX - WINDOW_WIDTH / 2) / (WINDOW_WIDTH)), 
+				float(-2 * (mY - WINDOW_HEIGHT / 2) / (WINDOW_HEIGHT))),
+			glm::vec2(0, 0), 2.0f, 2.0f);
+		std::vector<GLfloat> meshData = trisToMeshData(lightingTris);
+		storeVBOData(lightingVBO, 0, meshData.data(), meshData.size() * sizeof(GLfloat));
+
+
+		glUseProgram(basic_shader);
+
+		renderBlankVAO(lightingVAO, lightingTris.size() * 3);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

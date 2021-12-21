@@ -1,7 +1,7 @@
 #include "common.h"
 
 
-bool raycastIntersection(glm::vec2 rayPos, glm::vec2 rayDir, seg2 seg, glm::vec2* collisionPoint, double* rayDist, double* segDist)
+bool raycastIntersection(glm::vec2 rayPos, glm::vec2 rayDir, seg2 seg, glm::vec2* collisionPoint, float* rayDist, float* segDist)
 {
 	// Convert segment into form of segPos + segDir * T (0 <= T <= 1)
 	glm::vec2 segPos = seg.start;
@@ -30,7 +30,7 @@ bool raycastIntersection(glm::vec2 rayPos, glm::vec2 rayDir, seg2 seg, glm::vec2
 
 bool raycastIntersection(glm::vec2 rayPos, glm::vec2 rayDir, seg2 seg, glm::vec2* collisionPoint)
 {
-	double rd, sd;
+	float rd, sd;
 	return raycastIntersection(rayPos, rayDir, seg, collisionPoint, &rd, &sd);
 }
 

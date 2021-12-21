@@ -26,7 +26,7 @@ struct seg2
 	glm::vec2 start;
 	glm::vec2 end;
 
-	seg2(double x0, double y0, double x1, double y1)
+	seg2(float x0, float y0, float x1, float y1)
 	{
 		start.x = x0; start.y = y0;
 		end.x = x1; end.y = y1;
@@ -34,7 +34,7 @@ struct seg2
 
 	seg2(glm::vec2 s, glm::vec2 e) { start = s; end = e; }
 
-	double length() { return sqrt( pow(start.x - end.x, 2) + pow(start.y - end.y, 2)); }
+	float length() { return sqrt( pow(start.x - end.x, 2) + pow(start.y - end.y, 2)); }
 };
 
 
@@ -52,7 +52,7 @@ struct Triangle
 
 inline bool operator==(seg2 a, seg2 b) { return (a.start == b.start && a.end == b.end); }
 
-bool raycastIntersection(glm::vec2 rayPos, glm::vec2 rayDir, seg2 seg, glm::vec2* collisionPoint, double* rayDist, double* segDist);
+bool raycastIntersection(glm::vec2 rayPos, glm::vec2 rayDir, seg2 seg, glm::vec2* collisionPoint, float* rayDist, float* segDist);
 bool raycastIntersection(glm::vec2 rayPos, glm::vec2 rayDir, seg2 seg, glm::vec2* collisionPoint);
 bool raycastIntersection(glm::vec2 rayPos, glm::vec2 rayDir, seg2 seg);
 

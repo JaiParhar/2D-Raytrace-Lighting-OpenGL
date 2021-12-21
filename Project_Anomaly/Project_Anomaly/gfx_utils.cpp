@@ -1,24 +1,30 @@
 #include "gfx_utils.h"
 
-GLuint genBlankQuadVAO()
+GLuint genVAO()
 {
-	// Creating and binding VAO
-	GLuint VAO_ID;
-	glGenVertexArrays(1, &VAO_ID);
-	glBindVertexArray(VAO_ID);
+	GLuint vaoID;
+	glGenVertexArrays(1, &vaoID);
+	return vaoID;
+}
 
-	// Creating and binding VBO
-	GLuint VBO_ID;
-	glGenBuffers(1, &VBO_ID);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
+GLuint genVBO()
+{
+	GLuint vboID;
+	glGenBuffers(1, &vboID);
+	return vboID;
+}
 
-	// Load vertex data into VBO
-	glBufferData(GL_ARRAY_BUFFER, sizeof(QUAD_VERTEX_DATA), QUAD_VERTEX_DATA, GL_STATIC_DRAW);
-
-	// Unbind VAO (VBO is automatically unbound)
-	glBindVertexArray(0);
-
-	return VAO_ID;
+void storeVBOData(GLuint vboID, GLuint attrib, const GLfloat* data, int dataSize)
+{
+	// Bind and load into VBO
+	glBindBuffer(GL_ARRAY_BUFFER, vboID);
+	glBufferData(GL_ARRAY_BUFFER, dataSize, data, GL_STATIC_DRAW);
+	
+	// Store VBO in VAO
+	glVertexAttribPointer(attrib, 3, GL_FLOAT, false, 0, 0);
+	
+	// Unbind VBO
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 GLuint loadShaders(const char* vertex_file_path, const char* fragment_file_path) {

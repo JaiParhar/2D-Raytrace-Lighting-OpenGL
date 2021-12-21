@@ -1,11 +1,25 @@
 #include "lighting.h"
 
-std::vector<Triangle> getVisionTris(LightMap m, glm::vec2 pos, int boundW, int boundH)
+std::vector<GLfloat> trisToMeshData(std::vector<Triangle> tris)
+{
+	std::vector<GLfloat> meshData;
+
+	for (int i = 0; i < tris.size(); i++) 
+	{
+		meshData.push_back(tris[i].p0.x); meshData.push_back(tris[i].p0.y); meshData.push_back(0.0f);
+		meshData.push_back(tris[i].p1.x); meshData.push_back(tris[i].p1.y); meshData.push_back(0.0f);
+		meshData.push_back(tris[i].p2.x); meshData.push_back(tris[i].p2.y); meshData.push_back(0.0f);
+	}
+
+	return meshData;
+}
+
+std::vector<Triangle> getVisionTris(LightMap m, glm::vec2 pos, float boundW, float boundH)
 {
 	return getVisionTris(m, pos, pos, boundW, boundH);
 }
 
-std::vector<Triangle> getVisionTris(LightMap m, glm::vec2 pos, glm::vec2 boundPos, int boundW, int boundH)
+std::vector<Triangle> getVisionTris(LightMap m, glm::vec2 pos, glm::vec2 boundPos, float boundW, float boundH)
 {
 	// Added check to make sure that view source is in bounds
 	if (pos.x <= (boundPos.x - (boundW / 2)) || pos.x >= (boundPos.x + (boundW / 2)) || 
@@ -35,16 +49,16 @@ std::vector<Triangle> getVisionTris(LightMap m, glm::vec2 pos, glm::vec2 boundPo
 
 	// Actually cast the fuckers
 	std::vector<glm::vec2> orderedCollisions;
-	double idontcare; // Stores segDist, which i dont care about here, and i didnt feel like adding another implementation
+	float idontcare; // Stores segDist, which i dont care about here, and i didnt feel like adding another implementation
 	for (int r = 0; r < orderedRays.size(); r++)
 	{
 		int closestIndex = 0;
-		double closestDist = -1;
+		float closestDist = -1;
 		glm::vec2 closestPoint;
 		for (int w = 0; w < allWalls.size(); w++) 
 		{
 			glm::vec2 collPoint;
-			double rayDist;
+			float rayDist;
 			if (raycastIntersection(pos, orderedRays[r], allWalls[w], &collPoint, &rayDist, &idontcare)) // Dont combine with inner if, for clarity mainly
 			{
 				if (rayDist < closestDist || closestDist == -1)
@@ -78,16 +92,16 @@ std::vector<Triangle> getVisionTris(LightMap m, glm::vec2 pos, glm::vec2 boundPo
 std::vector<glm::vec2> getSortedUniqueRaysToEndpoints(std::vector<seg2> segs, glm::vec2 pos)
 {
 	// Gets unique angles into the array
-	std::vector<double> rayAngles;
+	std::vector<float> rayAngles;
 	for (int i = 0; i < segs.size(); i++)
 	{
 		glm::vec2 posToStart = segs[i].start - pos;
 		glm::vec2 posToEnd = segs[i].end - pos;
 
-		double angleStart = atan2(posToStart.y, posToStart.x);
-		double angleEnd = atan2(posToEnd.y, posToEnd.x);
+		float angleStart = atan2(posToStart.y, posToStart.x);
+		float angleEnd = atan2(posToEnd.y, posToEnd.x);
 
-		double offset = 0.00001;
+		float offset = 0.00001;
 
 		// Makes sure to add if not doubled up
 		if (std::find(rayAngles.begin(), rayAngles.end(), angleStart) == rayAngles.end())

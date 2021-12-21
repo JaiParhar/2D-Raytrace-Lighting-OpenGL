@@ -13,7 +13,10 @@
 
 #include "common.h"
 
-GLuint genBlankQuadVAO();
+GLuint genVAO();
+GLuint genVBO();
+
+void storeVBOData(GLuint vboID, GLuint attrib, const GLfloat* data, int dataSize);
 
 GLuint loadShaders(const char* vertex_file_path, const char* fragment_file_path);
 
