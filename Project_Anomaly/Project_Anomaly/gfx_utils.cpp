@@ -14,58 +14,76 @@ GLuint genVBO()
 	return vboID;
 }
 
-void storeVBOData(GLuint vboID, GLuint attrib, const GLfloat* data, int dataSize)
+GLuint genTexture()
+{
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+	return textureID;
+}
+
+void storeVBOData(GLuint vboID, GLuint attrib, const GLfloat* data, int dataSize, int dimension)
 {
 	// Bind and load into VBO
 	glBindBuffer(GL_ARRAY_BUFFER, vboID);
 	glBufferData(GL_ARRAY_BUFFER, dataSize, data, GL_STATIC_DRAW);
 	
 	// Store VBO in VAO
-	glVertexAttribPointer(attrib, 3, GL_FLOAT, false, 0, 0);
+	glVertexAttribPointer(attrib, dimension, GL_FLOAT, false, 0, 0);
 	
 	// Unbind VBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-GLuint loadShaders(const char* vertex_file_path, const char* fragment_file_path) {
+void storePNGTextureData(GLuint textureID, std::vector<unsigned char> data, unsigned long* width, unsigned long* height, bool linearInterp)
+{
+	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	// Create the shaders
+	std::vector<unsigned char> out;
+
+	unsigned long w, h;
+
+	int errorCode = decodePNG(data.data(), data.size(), &out, &w, &h);
+	if (errorCode != 0) {
+		printf("decodePNG failed with error: %i\n", errorCode);
+		return;
+	}
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, &(out[0]));
+
+	//Set some texture parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	if (linearInterp)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	}
+	else
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+	}
+
+	//Generate the mipmaps
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	//Unbind the texture
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	*width = w; *height = h;
+}
+
+GLuint createShaderProgram(std::string vert, std::string frag)
+{
 	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-
-	// Read the Vertex Shader code from the file
-	std::string VertexShaderCode;
-	std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
-	if (VertexShaderStream.is_open()) {
-		std::stringstream sstr;
-		sstr << VertexShaderStream.rdbuf();
-		VertexShaderCode = sstr.str();
-		VertexShaderStream.close();
-	}
-	else {
-		printf("Could not open %s.\n", vertex_file_path);
-		return 0;
-	}
-
-	// Read the Fragment Shader code from the file
-	std::string FragmentShaderCode;
-	std::ifstream FragmentShaderStream(fragment_file_path, std::ios::in);
-	if (FragmentShaderStream.is_open()) {
-		std::stringstream sstr;
-		sstr << FragmentShaderStream.rdbuf();
-		FragmentShaderCode = sstr.str();
-		FragmentShaderStream.close();
-	}
-	else {
-		printf("Could not open %s.\n", fragment_file_path);
-		return 0;
-	}
 
 	GLint Result = GL_FALSE;
 	int InfoLogLength;
 
 	// Compile Vertex Shader
-	char const* VertexSourcePointer = VertexShaderCode.c_str();
+	char const* VertexSourcePointer = vert.c_str();
 	glShaderSource(VertexShaderID, 1, &VertexSourcePointer, NULL);
 	glCompileShader(VertexShaderID);
 
@@ -79,7 +97,7 @@ GLuint loadShaders(const char* vertex_file_path, const char* fragment_file_path)
 	}
 
 	// Compile Fragment Shader
-	char const* FragmentSourcePointer = FragmentShaderCode.c_str();
+	char const* FragmentSourcePointer = frag.c_str();
 	glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer, NULL);
 	glCompileShader(FragmentShaderID);
 
@@ -115,3 +133,5 @@ GLuint loadShaders(const char* vertex_file_path, const char* fragment_file_path)
 
 	return ProgramID;
 }
+
+

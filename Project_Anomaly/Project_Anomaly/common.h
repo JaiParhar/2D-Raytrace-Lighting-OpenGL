@@ -21,6 +21,16 @@ static const GLfloat QUAD_VERTEX_DATA[] = {
 
 static const GLuint QUAD_VERTEX_NUMBER = 6; // 3 vertices per triangle * 2 triangles
 
+static const GLfloat QUAD_UV_DATA[] = {
+	0.0f, 0.0f,
+	1.0f, 0.0f,
+	0.0f, 1.0f,
+
+	1.0f, 0.0f,
+	1.0f, 1.0f,
+	0.0f, 1.0f
+};
+
 struct seg2
 {
 	glm::vec2 start;

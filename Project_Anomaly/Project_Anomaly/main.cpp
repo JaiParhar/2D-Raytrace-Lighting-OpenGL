@@ -4,6 +4,8 @@
 #include "GLFW/glfw3.h"
 #include "glm/glm.hpp"
 
+#include "load.h"
+
 #include "gfx_render.h"
 #include "gfx_utils.h"
 
@@ -44,19 +46,22 @@ int main(int argc, char* args[])
 	glBindVertexArray(lightingVAO);
 	GLuint lightingVBO = genVBO();
 	storeVBOData(lightingVBO, 0, QUAD_VERTEX_DATA, sizeof(QUAD_VERTEX_DATA));
-	
-	GLfloat TEST_DATA[] = {
-	-0.5f, 0.5f, 0.0f,
-	0.5f, 0.5f, 0.0f,
-	-0.5f, -0.5f, 0.0f,
 
-	0.5f, 0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	-0.5f, -0.5f, 0.0f
-	};
+	GLuint texturedQuadVAO = genVAO();
+	glBindVertexArray(texturedQuadVAO);
+	GLuint texturedQuadPos = genVBO();
+	storeVBOData(texturedQuadPos, 0, QUAD_VERTEX_DATA, sizeof(QUAD_VERTEX_DATA));
+	GLuint texturedQuadUVs = genVBO();
+	storeVBOData(texturedQuadUVs, 1, QUAD_UV_DATA, sizeof(QUAD_UV_DATA), 2);
 
-	GLuint basic_shader = loadShaders("shaders/basic.vert", "shaders/basic.frag");
-	
+	GLuint basic_shader = createShaderProgram(loadFileToString("shaders/basic.vert"), loadFileToString("shaders/basic.frag"));
+	GLuint texture_shader = createShaderProgram(loadFileToString("shaders/texture.vert"), loadFileToString("shaders/texture.frag"));
+
+	GLuint quadTexture = genTexture();
+	unsigned long w, h;
+	storePNGTextureData(quadTexture, loadFileToCharBuffer("assets/Tile.png"), &w, &h);
+	GLuint textureSamplerID = glGetUniformLocation(texture_shader, "textureSampler");
+
 	double mX, mY;
 	glfwGetCursorPos(window, &mX, &mY);
 
@@ -65,7 +70,7 @@ int main(int argc, char* args[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Render and update area -- TODO: make this proper
-
+		/*
 		glfwGetCursorPos(window, &mX, &mY);
 
 		std::vector<Triangle> lightingTris = getVisionTris(lm,
@@ -77,8 +82,13 @@ int main(int argc, char* args[])
 
 
 		glUseProgram(basic_shader);
-
 		renderBlankVAO(lightingVAO, lightingTris.size() * 3);
+		*/
+		glUseProgram(texture_shader);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, quadTexture);
+		glUniform1i(textureSamplerID, 0);
+		renderTexturedVAO(texturedQuadVAO, 6);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

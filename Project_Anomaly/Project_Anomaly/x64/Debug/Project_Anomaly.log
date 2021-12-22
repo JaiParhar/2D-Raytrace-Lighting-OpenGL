@@ -1,8 +1,9 @@
-﻿  main.cpp
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\common.h(37,30): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(34,47): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(37,50): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(38,52): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(76,82): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(82,54): warning C4267: 'argument': conversion from 'size_t' to 'GLuint', possible loss of data
+﻿  common.cpp
+C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\common.h(47,30): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  main.cpp
+C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\common.h(47,30): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(36,47): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(39,50): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\Project_Anomaly\main.cpp(40,52): warning C4305: 'argument': truncation from 'double' to 'float'
+  Generating Code...
   Project_Anomaly.vcxproj -> C:\Users\Kush\Desktop\Game Prototypes and Projects\Project_Anomaly\Project_Anomaly\Project_Anomaly\x64\Debug\Project_Anomaly.exe

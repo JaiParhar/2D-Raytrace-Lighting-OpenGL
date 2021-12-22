@@ -2,22 +2,21 @@
 #ifndef GFX_UTILS_H
 #define GFX_UTILS_H
 
-#include <stdio.h>
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <string>
 #include <vector>
 
 #include "GL/glew.h"
+#include "picoPNG.h"
 
 #include "common.h"
 
 GLuint genVAO();
 GLuint genVBO();
+GLuint genTexture();
 
-void storeVBOData(GLuint vboID, GLuint attrib, const GLfloat* data, int dataSize);
+void storeVBOData(GLuint vboID, GLuint attrib, const GLfloat* data, int dataSize, int dimension = 3);
+void storePNGTextureData(GLuint textureID, std::vector<unsigned char> data, unsigned long* width, unsigned long* height, bool linearInterp = false);
 
-GLuint loadShaders(const char* vertex_file_path, const char* fragment_file_path);
+GLuint createShaderProgram(std::string vert, std::string frag);
 
 #endif

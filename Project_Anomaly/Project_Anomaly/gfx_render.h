@@ -8,5 +8,6 @@
 #include "gfx_utils.h"
 
 void renderBlankVAO(GLuint VAO_ID, GLuint num_vertices);
+void renderTexturedVAO(GLuint VAO_ID, GLuint num_vertices);
 
 #endif
